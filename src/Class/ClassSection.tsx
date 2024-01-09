@@ -1,34 +1,19 @@
-import { Component } from "react";
+import { Component, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { DogData, WhatToFilter } from "../types";
-import { ClassDogs } from "./ClassDogs";
-import { ClassCreateDogForm } from "./ClassCreateDogForm";
 
 type ClassSectionProps = {
   allDogs: DogData[];
-  fetchData: () => Promise<void>;
   whatToFilter: WhatToFilter;
   setWhatToFilter: (inputValue: WhatToFilter) => void;
+  children: ReactNode;
 };
 
 export class ClassSection extends Component<ClassSectionProps> {
   render() {
-    const { allDogs, fetchData, whatToFilter, setWhatToFilter } = this.props;
+    const { allDogs, whatToFilter, setWhatToFilter, children } = this.props;
     const favoritedAmt = allDogs.filter((dog) => dog.isFavorite).length;
     const unfavoritedAmt = allDogs.filter((dog) => !dog.isFavorite).length;
-
-    function dogDataToShow() {
-      switch (whatToFilter) {
-        case "favorite":
-          return allDogs.filter((dog) => dog.isFavorite);
-        case "unfavorite":
-          return allDogs.filter((dog) => !dog.isFavorite);
-        case "non-selected":
-          return allDogs;
-        default:
-          return [];
-      }
-    }
 
     return (
       <section id="main-section">
@@ -76,13 +61,7 @@ export class ClassSection extends Component<ClassSectionProps> {
             </div>
           </div>
         </div>
-        <div className="content-container">
-          {whatToFilter !== "create-dog" ? (
-            <ClassDogs dogData={dogDataToShow()} fetchData={fetchData} />
-          ) : (
-            <ClassCreateDogForm fetchData={fetchData} />
-          )}
-        </div>
+        <div className="content-container">{children}</div>
       </section>
     );
   }

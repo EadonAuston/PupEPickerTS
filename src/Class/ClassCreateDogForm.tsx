@@ -22,24 +22,21 @@ export class ClassCreateDogForm extends Component<ClassCreateDogFormProps> {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      try {
-        await Requests.postDog({
-          name,
-          description,
-          image,
-          isFavorite,
+
+      Requests.postDog({ name, description, image, isFavorite })
+        .then(() => {
+          toast.success("Dog Successfully Created!");
+          if (!image) {
+            this.setState({ image: defaultSelectedImage });
+          }
+          fetchData();
+          this.setState({ name: "" });
+          this.setState({ description: "" });
+        })
+        .catch((error) => {
+          toast.error("Dog Creation Unsuccessful");
+          console.error("Error creating dog:", error);
         });
-        toast.success("Dog Successfully Created!");
-        if (!image) {
-          this.setState({ image: defaultSelectedImage });
-        }
-        fetchData();
-        this.setState({ name: "" });
-        this.setState({ description: "" });
-      } catch (error) {
-        toast.error("Dog Creation Unsuccessful");
-        console.error("Error creating dog:", error);
-      }
     };
 
     return (

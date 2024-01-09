@@ -2,25 +2,26 @@ import { Component } from "react";
 import { ClassSection } from "./ClassSection";
 import { Requests } from "../api";
 import { DogData, WhatToFilter } from "../types";
+import { ClassDogs } from "./ClassDogs";
+import { ClassCreateDogForm } from "./ClassCreateDogForm";
 
 type ClassAppState = {
   allDogs: DogData[];
   whatToFilter: WhatToFilter;
+  isLoading: boolean;
 };
 
 export class ClassApp extends Component<{}, ClassAppState> {
   state: ClassAppState = {
     allDogs: [],
     whatToFilter: "non-selected",
+    isLoading: false,
   };
 
-  fetchData = async () => {
-    try {
-      const data = await Requests.getAllDogs();
-      this.setState({ allDogs: data });
-    } catch (error) {
-      console.error("Error fetching dog data:", error);
-    }
+  fetchData = () => {
+    return Requests.getAllDogs()
+      .then((dogs) => this.setState({ allDogs: dogs }))
+      .catch((e) => console.error("Error fetching dog data:", e));
   };
 
   componentDidMount() {
@@ -32,7 +33,53 @@ export class ClassApp extends Component<{}, ClassAppState> {
   };
 
   render() {
-    const { allDogs, whatToFilter } = this.state;
+    const { allDogs, whatToFilter, isLoading } = this.state;
+
+    const filteredDogData = (() => {
+      switch (whatToFilter) {
+        case "favorite":
+          return allDogs.filter((dog) => dog.isFavorite);
+        case "unfavorite":
+          return allDogs.filter((dog) => !dog.isFavorite);
+        case "non-selected":
+          return allDogs;
+        default:
+          return [];
+      }
+    })();
+
+    const createRequest = (
+      typeOfRequest: "delete" | "favorite" | "unfavorite",
+      dogId: number
+    ) => {
+      typeOfRequest === "delete"
+        ? (() => {
+            this.setState({ isLoading: true });
+            Requests.deleteDog(dogId)
+              .then(() =>
+                this.fetchData().then(() => this.setState({ isLoading: false }))
+              )
+              .catch((e) => {
+                console.log("Error Occurred", e);
+                alert("Bad Server Request or Connectivity");
+                this.setState({ isLoading: false });
+              });
+          })()
+        : (() => {
+            this.setState({ isLoading: true });
+            Requests.updateDog(dogId, {
+              isFavorite: typeOfRequest === "favorite" ? true : false,
+            })
+              .then(() =>
+                this.fetchData().then(() => this.setState({ isLoading: false }))
+              )
+              .catch((e) => {
+                console.log("Error Occurred", e);
+                alert("Bad Server Request or Connectivity");
+                this.setState({ isLoading: false });
+              });
+          })();
+    };
 
     return (
       <div className="App" style={{ backgroundColor: "goldenrod" }}>
@@ -41,10 +88,18 @@ export class ClassApp extends Component<{}, ClassAppState> {
         </header>
         <ClassSection
           allDogs={allDogs}
-          fetchData={this.fetchData}
           whatToFilter={whatToFilter}
-          setWhatToFilter={this.setWhatToFilter}
-        />
+          setWhatToFilter={this.setWhatToFilter}>
+          {whatToFilter !== "create-dog" ? (
+            <ClassDogs
+              dogs={filteredDogData}
+              createRequest={createRequest}
+              isLoading={isLoading}
+            />
+          ) : (
+            <ClassCreateDogForm fetchData={this.fetchData} />
+          )}
+        </ClassSection>
       </div>
     );
   }

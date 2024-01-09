@@ -1,47 +1,24 @@
 import { DogCard } from "../Shared/DogCard";
 import { Component } from "react";
-import { Requests } from "../api";
 import { DogData } from "../types";
 
 type ClassDogsProps = {
-  dogData: DogData[];
-  fetchData: () => Promise<void>;
+  dogs: DogData[];
+  createRequest: (
+    typeOfRequest: "delete" | "favorite" | "unfavorite",
+    dogId: number
+  ) => void;
+  isLoading: boolean;
 };
 
 // Right now these dogs are constant, but in reality we should be getting these from our server
 export class ClassDogs extends Component<ClassDogsProps> {
-  state = {
-    isLoading: false,
-  };
   render() {
-    const { isLoading } = this.state;
-    const { dogData, fetchData } = this.props;
-
-    const handleTrashIconClick = async (dogId: number) => {
-      this.setState({ isLoading: true });
-      await Requests.deleteDog(dogId);
-      await fetchData();
-      this.setState({ isLoading: false });
-    };
-
-    const handleHeartClick = async (dogId: number) => {
-      this.setState({ isLoading: true });
-      await Requests.updateDog(dogId, { isFavorite: false });
-      await fetchData();
-      this.setState({ isLoading: false });
-    };
-
-    const handleEmptyHeartClick = async (dogId: number) => {
-      this.setState({ isLoading: true });
-      await Requests.updateDog(dogId, { isFavorite: true });
-      await fetchData();
-      this.setState({ isLoading: false });
-    };
-
+    const { dogs, createRequest, isLoading } = this.props;
     return (
       <>
         <div className="content-container">
-          {dogData.map((dog) => (
+          {dogs.map((dog) => (
             <DogCard
               dog={{
                 id: dog.id,
@@ -51,9 +28,9 @@ export class ClassDogs extends Component<ClassDogsProps> {
                 name: dog.name,
               }}
               key={dog.id}
-              onTrashIconClick={() => handleTrashIconClick(dog.id)}
-              onHeartClick={() => handleHeartClick(dog.id)}
-              onEmptyHeartClick={() => handleEmptyHeartClick(dog.id)}
+              onTrashIconClick={() => createRequest("delete", dog.id)}
+              onHeartClick={() => createRequest("unfavorite", dog.id)}
+              onEmptyHeartClick={() => createRequest("favorite", dog.id)}
               isLoading={isLoading}
             />
           ))}

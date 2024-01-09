@@ -1,1 +1,123 @@
-{"dogs":[{"name":"Edwardo","image":"/assets/boxer.png","description":"viciously past pro besides thrifty weighty jolly for","isFavorite":false,"id":0},{"name":"Jake","image":"/assets/boxer.png","description":"tame rasp past across psst","isFavorite":false,"id":1},{"name":"Samara","image":"/assets/corgi.png","description":"mid even wrist worriedly phew coast geez","isFavorite":false,"id":2},{"name":"Adonis","image":"/assets/cowardly.png","description":"righteously instead unlike when between except down even","isFavorite":false,"id":3},{"name":"Kurt","image":"/assets/dalmation.png","description":"than bliss acknowledgment palm badly","isFavorite":true,"id":4},{"name":"Eldora","image":"/assets/blue-heeler.png","description":"seemingly voluminous quick beneath blissfully rigidly or","isFavorite":true,"id":5},{"name":"Darrion","image":"/assets/dalmation.png","description":"demur toboggan after knowingly strange pricey up ringworm","isFavorite":true,"id":6},{"name":"Adolphus","image":"/assets/dalmation.png","description":"for pish ephemeris until suspiciously","isFavorite":false,"id":7},{"name":"Roslyn","image":"/assets/chihuahua.avif","description":"comply underrate yowza tattered greedily athwart beneath zowie","isFavorite":false,"id":8},{"name":"Reed","image":"/assets/dalmation.png","description":"incomparable gee first blushing yet anguished next pound","isFavorite":false,"id":9},{"name":"Percy","image":"/assets/corgi.png","description":"yippee once device plummet lest boldly whenever","isFavorite":true,"id":10},{"name":"Kyra","image":"/assets/dalmation.png","description":"bubbly huzzah validate likewise since blah consequently for","isFavorite":false,"id":11},{"name":"Tyshawn","image":"/assets/chihuahua.avif","description":"yum whether and hence wetly","isFavorite":false,"id":12},{"name":"Harley","image":"/assets/corgi.png","description":"physically chops carry this pack","isFavorite":false,"id":13},{"name":"Laron","image":"/assets/dalmation.png","description":"anti because vandalize slimy spike profitable across educate","isFavorite":true,"id":14},{"name":"Raven","image":"/assets/cowardly.png","description":"shark circadian finally row amusing underplay reorganize until","isFavorite":true,"id":15},{"name":"Rahul","image":"/assets/chihuahua.avif","description":"barge wisely fully prickly family","isFavorite":true,"id":16},{"name":"William","image":"/assets/corgi.png","description":"klutzy yet whether or hence blah sponsor","isFavorite":true,"id":17},{"name":"Charlie","image":"/assets/boxer.png","description":"ew chime lanky vertigo linseed healthily coaxingly","isFavorite":true,"id":18},{"name":"Reed","image":"/assets/blue-heeler.png","description":"dismal ugh considering however strictly","isFavorite":false,"id":19}]}
+{
+  "dogs": [
+    {
+      "name": "Adonis",
+      "image": "/assets/cowardly.png",
+      "description": "righteously instead unlike when between except down even",
+      "isFavorite": true,
+      "id": 3
+    },
+    {
+      "name": "Kurt",
+      "image": "/assets/dalmation.png",
+      "description": "than bliss acknowledgment palm badly",
+      "isFavorite": true,
+      "id": 4
+    },
+    {
+      "name": "Eldora",
+      "image": "/assets/blue-heeler.png",
+      "description": "seemingly voluminous quick beneath blissfully rigidly or",
+      "isFavorite": true,
+      "id": 5
+    },
+    {
+      "name": "Darrion",
+      "image": "/assets/dalmation.png",
+      "description": "demur toboggan after knowingly strange pricey up ringworm",
+      "isFavorite": true,
+      "id": 6
+    },
+    {
+      "name": "Adolphus",
+      "image": "/assets/dalmation.png",
+      "description": "for pish ephemeris until suspiciously",
+      "isFavorite": false,
+      "id": 7
+    },
+    {
+      "name": "Roslyn",
+      "image": "/assets/chihuahua.avif",
+      "description": "comply underrate yowza tattered greedily athwart beneath zowie",
+      "isFavorite": false,
+      "id": 8
+    },
+    {
+      "name": "Reed",
+      "image": "/assets/dalmation.png",
+      "description": "incomparable gee first blushing yet anguished next pound",
+      "isFavorite": false,
+      "id": 9
+    },
+    {
+      "name": "Percy",
+      "image": "/assets/corgi.png",
+      "description": "yippee once device plummet lest boldly whenever",
+      "isFavorite": true,
+      "id": 10
+    },
+    {
+      "name": "Kyra",
+      "image": "/assets/dalmation.png",
+      "description": "bubbly huzzah validate likewise since blah consequently for",
+      "isFavorite": false,
+      "id": 11
+    },
+    {
+      "name": "Tyshawn",
+      "image": "/assets/chihuahua.avif",
+      "description": "yum whether and hence wetly",
+      "isFavorite": false,
+      "id": 12
+    },
+    {
+      "name": "Harley",
+      "image": "/assets/corgi.png",
+      "description": "physically chops carry this pack",
+      "isFavorite": false,
+      "id": 13
+    },
+    {
+      "name": "Laron",
+      "image": "/assets/dalmation.png",
+      "description": "anti because vandalize slimy spike profitable across educate",
+      "isFavorite": true,
+      "id": 14
+    },
+    {
+      "name": "Raven",
+      "image": "/assets/cowardly.png",
+      "description": "shark circadian finally row amusing underplay reorganize until",
+      "isFavorite": true,
+      "id": 15
+    },
+    {
+      "name": "Rahul",
+      "image": "/assets/chihuahua.avif",
+      "description": "barge wisely fully prickly family",
+      "isFavorite": true,
+      "id": 16
+    },
+    {
+      "name": "William",
+      "image": "/assets/corgi.png",
+      "description": "klutzy yet whether or hence blah sponsor",
+      "isFavorite": true,
+      "id": 17
+    },
+    {
+      "name": "Charlie",
+      "image": "/assets/boxer.png",
+      "description": "ew chime lanky vertigo linseed healthily coaxingly",
+      "isFavorite": true,
+      "id": 18
+    },
+    {
+      "name": "Reed",
+      "image": "/assets/blue-heeler.png",
+      "description": "dismal ugh considering however strictly",
+      "isFavorite": false,
+      "id": 19
+    }
+  ]
+}
