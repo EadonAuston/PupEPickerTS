@@ -4,7 +4,7 @@
       "name": "Kurt",
       "image": "/assets/dalmation.png",
       "description": "than bliss acknowledgment palm badly",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 4
     },
     {
