@@ -1,5 +1,4 @@
 import { dogPictures } from "../dog-pictures";
-import { Requests } from "../api";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
@@ -7,8 +6,17 @@ const defaultSelectedImage = dogPictures.BlueHeeler;
 
 export const FunctionalCreateDogForm = ({
   fetchData,
+  postDog,
+  setIsLoading,
 }: {
   fetchData: () => Promise<void>;
+  postDog: (
+    name: string,
+    description: string,
+    image: string,
+    isFavorite: boolean
+  ) => Promise<any>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -17,8 +25,7 @@ export const FunctionalCreateDogForm = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    Requests.postDog({ name, description, image, isFavorite })
+    postDog(name, description, image, isFavorite)
       .then(() => {
         toast.success("Dog Successfully Created!");
         if (!image) {
@@ -28,7 +35,8 @@ export const FunctionalCreateDogForm = ({
         setName("");
         setDescription("");
       })
-      .catch((error) => {
+      .finally(() => setIsLoading(false))
+      .catch((error: unknown) => {
         toast.error("Dog Creation Unsuccessful");
         console.error("Error creating dog:", error);
       });

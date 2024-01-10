@@ -1,17 +1,10 @@
 {
   "dogs": [
     {
-      "name": "Adonis",
-      "image": "/assets/cowardly.png",
-      "description": "righteously instead unlike when between except down even",
-      "isFavorite": true,
-      "id": 3
-    },
-    {
       "name": "Kurt",
       "image": "/assets/dalmation.png",
       "description": "than bliss acknowledgment palm badly",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 4
     },
     {
@@ -25,7 +18,7 @@
       "name": "Darrion",
       "image": "/assets/dalmation.png",
       "description": "demur toboggan after knowingly strange pricey up ringworm",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 6
     },
     {
@@ -53,28 +46,28 @@
       "name": "Percy",
       "image": "/assets/corgi.png",
       "description": "yippee once device plummet lest boldly whenever",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 10
     },
     {
       "name": "Kyra",
       "image": "/assets/dalmation.png",
       "description": "bubbly huzzah validate likewise since blah consequently for",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 11
     },
     {
       "name": "Tyshawn",
       "image": "/assets/chihuahua.avif",
       "description": "yum whether and hence wetly",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 12
     },
     {
       "name": "Harley",
       "image": "/assets/corgi.png",
       "description": "physically chops carry this pack",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 13
     },
     {
@@ -116,7 +109,7 @@
       "name": "Reed",
       "image": "/assets/blue-heeler.png",
       "description": "dismal ugh considering however strictly",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 19
     }
   ]

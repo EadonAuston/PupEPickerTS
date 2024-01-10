@@ -19,8 +19,12 @@ export class ClassApp extends Component<{}, ClassAppState> {
   };
 
   fetchData = () => {
+    this.setState({ isLoading: true });
     return Requests.getAllDogs()
       .then((dogs) => this.setState({ allDogs: dogs }))
+      .finally(() => {
+        this.setState({ isLoading: false });
+      })
       .catch((e) => console.error("Error fetching dog data:", e));
   };
 
@@ -30,6 +34,10 @@ export class ClassApp extends Component<{}, ClassAppState> {
 
   setWhatToFilter = (inputValue: WhatToFilter) => {
     this.setState({ whatToFilter: inputValue });
+  };
+
+  setIsLoading = (inputValue: boolean) => {
+    this.setState({ isLoading: inputValue });
   };
 
   render() {
@@ -48,37 +56,54 @@ export class ClassApp extends Component<{}, ClassAppState> {
       }
     })();
 
-    const createRequest = (
-      typeOfRequest: "delete" | "favorite" | "unfavorite",
-      dogId: number
+    const handleTrashIconClick = (dogId: number) => {
+      this.setState({ isLoading: true });
+      this.setState({ allDogs: allDogs.filter((dog) => dog.id !== dogId) });
+      Requests.deleteDog(dogId)
+        .finally(() => this.setState({ isLoading: false }))
+        .catch(() => {
+          this.setState({ allDogs: allDogs });
+        });
+    };
+
+    const handleHeartClick = (dogId: number) => {
+      this.setState({ isLoading: true });
+      this.setState({
+        allDogs: allDogs.map((dog) =>
+          dog.id === dogId ? { ...dog, isFavorite: false } : dog
+        ),
+      });
+
+      Requests.updateDog(dogId, { isFavorite: false })
+        .finally(() => this.setState({ isLoading: false }))
+        .catch(() => {
+          this.setState({ allDogs: allDogs });
+        });
+    };
+
+    const handleEmptyHeartClick = async (dogId: number) => {
+      this.setState({ isLoading: true });
+      this.setState({
+        allDogs: allDogs.map((dog) =>
+          dog.id === dogId ? { ...dog, isFavorite: true } : dog
+        ),
+      });
+
+      Requests.updateDog(dogId, { isFavorite: true })
+        .finally(() => this.setState({ isLoading: false }))
+        .catch(() => {
+          this.setState({ allDogs: allDogs });
+        });
+    };
+
+    const postDog = (
+      name: string,
+      description: string,
+      image: string,
+      isFavorite: boolean
     ) => {
-      typeOfRequest === "delete"
-        ? (() => {
-            this.setState({ isLoading: true });
-            Requests.deleteDog(dogId)
-              .then(() =>
-                this.fetchData().then(() => this.setState({ isLoading: false }))
-              )
-              .catch((e) => {
-                console.log("Error Occurred", e);
-                alert("Bad Server Request or Connectivity");
-                this.setState({ isLoading: false });
-              });
-          })()
-        : (() => {
-            this.setState({ isLoading: true });
-            Requests.updateDog(dogId, {
-              isFavorite: typeOfRequest === "favorite" ? true : false,
-            })
-              .then(() =>
-                this.fetchData().then(() => this.setState({ isLoading: false }))
-              )
-              .catch((e) => {
-                console.log("Error Occurred", e);
-                alert("Bad Server Request or Connectivity");
-                this.setState({ isLoading: false });
-              });
-          })();
+      this.setState({ isLoading: true });
+      return Requests.postDog({ name, description, image, isFavorite });
     };
 
     return (
@@ -93,11 +118,17 @@ export class ClassApp extends Component<{}, ClassAppState> {
           {whatToFilter !== "create-dog" ? (
             <ClassDogs
               dogs={filteredDogData}
-              createRequest={createRequest}
+              handleTrashIconClick={handleTrashIconClick}
+              handleHeartClick={handleHeartClick}
+              handleEmptyHeartClick={handleEmptyHeartClick}
               isLoading={isLoading}
             />
           ) : (
-            <ClassCreateDogForm fetchData={this.fetchData} />
+            <ClassCreateDogForm
+              fetchData={this.fetchData}
+              postDog={postDog}
+              setIsLoading={this.setIsLoading}
+            />
           )}
         </ClassSection>
       </div>

@@ -9,10 +9,13 @@ export function FunctionalApp() {
   const [allDogs, setAllDogs] = useState<DogData[]>([]);
   const [whatToFilter, setWhatToFilter] =
     useState<WhatToFilter>("non-selected");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchData = () => {
+    setIsLoading(true);
     return Requests.getAllDogs()
       .then(setAllDogs)
+      .finally(() => setIsLoading(false))
       .catch((e) => console.error("Error fetching dog data:", e));
   };
 
@@ -33,35 +36,54 @@ export function FunctionalApp() {
     }
   })();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const handleTrashIconClick = (dogId: number) => {
+    setIsLoading(true);
+    setAllDogs(allDogs.filter((dog) => dog.id !== dogId));
+    Requests.deleteDog(dogId)
+      .finally(() => setIsLoading(false))
+      .catch(() => {
+        setAllDogs(allDogs);
+      });
+  };
 
-  const createRequest = (
-    typeOfRequest: "delete" | "favorite" | "unfavorite",
-    dogId: number
+  const handleHeartClick = (dogId: number) => {
+    setIsLoading(true);
+    setAllDogs(
+      allDogs.map((dog) =>
+        dog.id === dogId ? { ...dog, isFavorite: false } : dog
+      )
+    );
+
+    Requests.updateDog(dogId, { isFavorite: false })
+      .finally(() => setIsLoading(false))
+      .catch(() => {
+        setAllDogs(allDogs);
+      });
+  };
+
+  const handleEmptyHeartClick = async (dogId: number) => {
+    setIsLoading(true);
+    setAllDogs(
+      allDogs.map((dog) =>
+        dog.id === dogId ? { ...dog, isFavorite: true } : dog
+      )
+    );
+
+    Requests.updateDog(dogId, { isFavorite: true })
+      .finally(() => setIsLoading(false))
+      .catch(() => {
+        setAllDogs(allDogs);
+      });
+  };
+
+  const postDog = (
+    name: string,
+    description: string,
+    image: string,
+    isFavorite: boolean
   ) => {
-    typeOfRequest === "delete"
-      ? (() => {
-          setIsLoading(true);
-          Requests.deleteDog(dogId)
-            .then(() => fetchData().then(() => setIsLoading(false)))
-            .catch((e) => {
-              console.log("Error Occurred", e);
-              alert("Bad Server Request or Connectivity");
-              setIsLoading(false);
-            });
-        })()
-      : (() => {
-          setIsLoading(true);
-          Requests.updateDog(dogId, {
-            isFavorite: typeOfRequest === "favorite" ? true : false,
-          })
-            .then(() => fetchData().then(() => setIsLoading(false)))
-            .catch((e) => {
-              console.log("Error Occurred", e);
-              alert("Bad Server Request or Connectivity");
-              setIsLoading(false);
-            });
-        })();
+    setIsLoading(true);
+    return Requests.postDog({ name, description, image, isFavorite });
   };
 
   return (
@@ -76,11 +98,17 @@ export function FunctionalApp() {
         {whatToFilter !== "create-dog" ? (
           <FunctionalDogs
             dogs={filteredDogData}
-            createRequest={createRequest}
+            handleTrashIconClick={handleTrashIconClick}
+            handleHeartClick={handleHeartClick}
+            handleEmptyHeartClick={handleEmptyHeartClick}
             isLoading={isLoading}
           />
         ) : (
-          <FunctionalCreateDogForm fetchData={fetchData} />
+          <FunctionalCreateDogForm
+            fetchData={fetchData}
+            postDog={postDog}
+            setIsLoading={setIsLoading}
+          />
         )}
       </FunctionalSection>
     </div>

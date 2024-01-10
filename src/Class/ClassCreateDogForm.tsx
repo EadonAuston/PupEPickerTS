@@ -1,12 +1,18 @@
 import { Component } from "react";
 import { dogPictures } from "../dog-pictures";
-import { Requests } from "../api";
 import { toast } from "react-hot-toast";
 
 const defaultSelectedImage = dogPictures.BlueHeeler;
 
 type ClassCreateDogFormProps = {
   fetchData: () => Promise<void>;
+  postDog: (
+    name: string,
+    description: string,
+    image: string,
+    isFavorite: boolean
+  ) => Promise<any>;
+  setIsLoading: (inputValue: boolean) => void;
 };
 
 export class ClassCreateDogForm extends Component<ClassCreateDogFormProps> {
@@ -17,13 +23,12 @@ export class ClassCreateDogForm extends Component<ClassCreateDogFormProps> {
     isFavorite: false,
   };
   render() {
-    const { fetchData } = this.props;
+    const { fetchData, postDog, setIsLoading } = this.props;
     const { name, description, image, isFavorite } = this.state;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-
-      Requests.postDog({ name, description, image, isFavorite })
+      postDog(name, description, image, isFavorite)
         .then(() => {
           toast.success("Dog Successfully Created!");
           if (!image) {
@@ -32,6 +37,9 @@ export class ClassCreateDogForm extends Component<ClassCreateDogFormProps> {
           fetchData();
           this.setState({ name: "" });
           this.setState({ description: "" });
+        })
+        .finally(() => {
+          setIsLoading(false);
         })
         .catch((error) => {
           toast.error("Dog Creation Unsuccessful");

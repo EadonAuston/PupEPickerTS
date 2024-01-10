@@ -4,15 +4,16 @@ import { DogData } from "../types";
 // Right now these dogs are constant, but in reality we should be getting these from our server
 export const FunctionalDogs = ({
   dogs,
-  createRequest,
   isLoading,
+  handleTrashIconClick,
+  handleHeartClick,
+  handleEmptyHeartClick,
 }: {
   dogs: DogData[];
-  createRequest: (
-    typeOfRequest: "delete" | "favorite" | "unfavorite",
-    dogId: number
-  ) => void;
   isLoading: boolean;
+  handleTrashIconClick: (dogId: number) => void;
+  handleHeartClick: (dogId: number) => void;
+  handleEmptyHeartClick: (dogId: number) => void;
 }) => {
   return (
     <>
@@ -27,9 +28,9 @@ export const FunctionalDogs = ({
               name: dog.name,
             }}
             key={dog.id}
-            onTrashIconClick={() => createRequest("delete", dog.id)}
-            onHeartClick={() => createRequest("unfavorite", dog.id)}
-            onEmptyHeartClick={() => createRequest("favorite", dog.id)}
+            onTrashIconClick={() => handleTrashIconClick(dog.id)}
+            onHeartClick={() => handleHeartClick(dog.id)}
+            onEmptyHeartClick={() => handleEmptyHeartClick(dog.id)}
             isLoading={isLoading}
           />
         ))}

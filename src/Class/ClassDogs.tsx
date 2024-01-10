@@ -4,17 +4,22 @@ import { DogData } from "../types";
 
 type ClassDogsProps = {
   dogs: DogData[];
-  createRequest: (
-    typeOfRequest: "delete" | "favorite" | "unfavorite",
-    dogId: number
-  ) => void;
+  handleTrashIconClick: (dogId: number) => void;
+  handleHeartClick: (dogId: number) => void;
+  handleEmptyHeartClick: (dogId: number) => void;
   isLoading: boolean;
 };
 
 // Right now these dogs are constant, but in reality we should be getting these from our server
 export class ClassDogs extends Component<ClassDogsProps> {
   render() {
-    const { dogs, createRequest, isLoading } = this.props;
+    const {
+      dogs,
+      handleEmptyHeartClick,
+      handleHeartClick,
+      handleTrashIconClick,
+      isLoading,
+    } = this.props;
     return (
       <>
         <div className="content-container">
@@ -28,9 +33,9 @@ export class ClassDogs extends Component<ClassDogsProps> {
                 name: dog.name,
               }}
               key={dog.id}
-              onTrashIconClick={() => createRequest("delete", dog.id)}
-              onHeartClick={() => createRequest("unfavorite", dog.id)}
-              onEmptyHeartClick={() => createRequest("favorite", dog.id)}
+              onTrashIconClick={() => handleTrashIconClick(dog.id)}
+              onHeartClick={() => handleHeartClick(dog.id)}
+              onEmptyHeartClick={() => handleEmptyHeartClick(dog.id)}
               isLoading={isLoading}
             />
           ))}

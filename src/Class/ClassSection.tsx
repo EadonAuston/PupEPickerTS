@@ -15,6 +15,11 @@ export class ClassSection extends Component<ClassSectionProps> {
     const favoritedAmt = allDogs.filter((dog) => dog.isFavorite).length;
     const unfavoritedAmt = allDogs.filter((dog) => !dog.isFavorite).length;
 
+    const toggleWhatToFilter = (input: WhatToFilter) => {
+      if (input === whatToFilter) setWhatToFilter("non-selected");
+      else setWhatToFilter(input);
+    };
+
     return (
       <section id="main-section">
         <div className="container-header">
@@ -29,9 +34,7 @@ export class ClassSection extends Component<ClassSectionProps> {
                 whatToFilter === "favorite" ? "active" : ""
               }`}
               onClick={() => {
-                whatToFilter === "favorite"
-                  ? setWhatToFilter("non-selected")
-                  : setWhatToFilter("favorite");
+                toggleWhatToFilter("favorite");
               }}>
               favorited ( {favoritedAmt} )
             </div>
@@ -42,9 +45,7 @@ export class ClassSection extends Component<ClassSectionProps> {
                 whatToFilter === "unfavorite" ? "active" : ""
               }`}
               onClick={() => {
-                whatToFilter === "unfavorite"
-                  ? setWhatToFilter("non-selected")
-                  : setWhatToFilter("unfavorite");
+                toggleWhatToFilter("unfavorite");
               }}>
               unfavorited ( {unfavoritedAmt} )
             </div>
@@ -53,9 +54,7 @@ export class ClassSection extends Component<ClassSectionProps> {
                 whatToFilter === "create-dog" ? "active" : ""
               }`}
               onClick={() => {
-                whatToFilter === "create-dog"
-                  ? setWhatToFilter("non-selected")
-                  : setWhatToFilter("create-dog");
+                toggleWhatToFilter("create-dog");
               }}>
               create dog
             </div>
