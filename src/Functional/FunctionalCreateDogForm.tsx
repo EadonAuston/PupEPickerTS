@@ -7,7 +7,6 @@ const defaultSelectedImage = dogPictures.BlueHeeler;
 export const FunctionalCreateDogForm = ({
   fetchData,
   postDog,
-  setIsLoading,
 }: {
   fetchData: () => Promise<void>;
   postDog: (
@@ -35,7 +34,7 @@ export const FunctionalCreateDogForm = ({
         setName("");
         setDescription("");
       })
-      .finally(() => setIsLoading(false))
+
       .catch((error: unknown) => {
         toast.error("Dog Creation Unsuccessful");
         console.error("Error creating dog:", error);

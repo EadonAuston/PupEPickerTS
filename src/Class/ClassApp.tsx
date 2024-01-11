@@ -4,6 +4,7 @@ import { Requests } from "../api";
 import { DogData, WhatToFilter } from "../types";
 import { ClassDogs } from "./ClassDogs";
 import { ClassCreateDogForm } from "./ClassCreateDogForm";
+import toast from "react-hot-toast";
 
 type ClassAppState = {
   allDogs: DogData[];
@@ -58,41 +59,43 @@ export class ClassApp extends Component<{}, ClassAppState> {
 
     const handleTrashIconClick = (dogId: number) => {
       this.setState({ isLoading: true });
-      this.setState({ allDogs: allDogs.filter((dog) => dog.id !== dogId) });
       Requests.deleteDog(dogId)
-        .finally(() => this.setState({ isLoading: false }))
+        .then(() => {
+          return this.fetchData();
+        })
         .catch(() => {
-          this.setState({ allDogs: allDogs });
+          toast.error("Something went wrong");
+        })
+        .finally(() => {
+          this.setState({ isLoading: false });
         });
     };
 
     const handleHeartClick = (dogId: number) => {
       this.setState({ isLoading: true });
-      this.setState({
-        allDogs: allDogs.map((dog) =>
-          dog.id === dogId ? { ...dog, isFavorite: false } : dog
-        ),
-      });
-
       Requests.updateDog(dogId, { isFavorite: false })
-        .finally(() => this.setState({ isLoading: false }))
+        .then(() => {
+          return this.fetchData();
+        })
         .catch(() => {
-          this.setState({ allDogs: allDogs });
+          toast.error("Something went wrong");
+        })
+        .finally(() => {
+          this.setState({ isLoading: false });
         });
     };
 
     const handleEmptyHeartClick = async (dogId: number) => {
       this.setState({ isLoading: true });
-      this.setState({
-        allDogs: allDogs.map((dog) =>
-          dog.id === dogId ? { ...dog, isFavorite: true } : dog
-        ),
-      });
-
       Requests.updateDog(dogId, { isFavorite: true })
-        .finally(() => this.setState({ isLoading: false }))
+        .then(() => {
+          return this.fetchData();
+        })
         .catch(() => {
-          this.setState({ allDogs: allDogs });
+          toast.error("Something went wrong");
+        })
+        .finally(() => {
+          this.setState({ isLoading: false });
         });
     };
 
@@ -103,7 +106,11 @@ export class ClassApp extends Component<{}, ClassAppState> {
       isFavorite: boolean
     ) => {
       this.setState({ isLoading: true });
-      return Requests.postDog({ name, description, image, isFavorite });
+      return Requests.postDog({ name, description, image, isFavorite })
+        .then(this.fetchData)
+        .finally(() => {
+          this.setState({ isLoading: false });
+        });
     };
 
     return (

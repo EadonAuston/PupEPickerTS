@@ -1,34 +1,6 @@
 {
   "dogs": [
     {
-      "name": "Kurt",
-      "image": "/assets/dalmation.png",
-      "description": "than bliss acknowledgment palm badly",
-      "isFavorite": true,
-      "id": 4
-    },
-    {
-      "name": "Eldora",
-      "image": "/assets/blue-heeler.png",
-      "description": "seemingly voluminous quick beneath blissfully rigidly or",
-      "isFavorite": true,
-      "id": 5
-    },
-    {
-      "name": "Darrion",
-      "image": "/assets/dalmation.png",
-      "description": "demur toboggan after knowingly strange pricey up ringworm",
-      "isFavorite": false,
-      "id": 6
-    },
-    {
-      "name": "Adolphus",
-      "image": "/assets/dalmation.png",
-      "description": "for pish ephemeris until suspiciously",
-      "isFavorite": false,
-      "id": 7
-    },
-    {
       "name": "Roslyn",
       "image": "/assets/chihuahua.avif",
       "description": "comply underrate yowza tattered greedily athwart beneath zowie",

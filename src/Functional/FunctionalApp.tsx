@@ -4,6 +4,7 @@ import { Requests } from "../api";
 import { DogData, WhatToFilter } from "../types";
 import { FunctionalDogs } from "./FunctionalDogs";
 import { FunctionalCreateDogForm } from "./FunctionalCreateDogForm";
+import toast from "react-hot-toast";
 
 export function FunctionalApp() {
   const [allDogs, setAllDogs] = useState<DogData[]>([]);
@@ -38,41 +39,43 @@ export function FunctionalApp() {
 
   const handleTrashIconClick = (dogId: number) => {
     setIsLoading(true);
-    setAllDogs(allDogs.filter((dog) => dog.id !== dogId));
     Requests.deleteDog(dogId)
-      .finally(() => setIsLoading(false))
+      .then(() => {
+        return fetchData();
+      })
       .catch(() => {
-        setAllDogs(allDogs);
+        toast.error("Something went wrong");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleHeartClick = (dogId: number) => {
     setIsLoading(true);
-    setAllDogs(
-      allDogs.map((dog) =>
-        dog.id === dogId ? { ...dog, isFavorite: false } : dog
-      )
-    );
-
     Requests.updateDog(dogId, { isFavorite: false })
-      .finally(() => setIsLoading(false))
+      .then(() => {
+        return fetchData();
+      })
       .catch(() => {
-        setAllDogs(allDogs);
+        toast.error("Something went wrong");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   const handleEmptyHeartClick = async (dogId: number) => {
     setIsLoading(true);
-    setAllDogs(
-      allDogs.map((dog) =>
-        dog.id === dogId ? { ...dog, isFavorite: true } : dog
-      )
-    );
-
     Requests.updateDog(dogId, { isFavorite: true })
-      .finally(() => setIsLoading(false))
+      .then(() => {
+        return fetchData();
+      })
       .catch(() => {
-        setAllDogs(allDogs);
+        toast.error("Something went wrong");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -83,7 +86,11 @@ export function FunctionalApp() {
     isFavorite: boolean
   ) => {
     setIsLoading(true);
-    return Requests.postDog({ name, description, image, isFavorite });
+    return Requests.postDog({ name, description, image, isFavorite })
+      .then(fetchData)
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (

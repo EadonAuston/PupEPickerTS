@@ -4,17 +4,11 @@ export const baseUrl = "http://localhost:3000";
 
 export const Requests = {
   // should return a promise with all dogs in the database
-  getAllDogs: async (): Promise<DogData[]> => {
-    try {
-      const response = await fetch("http://localhost:3000/dogs", {
-        method: "GET",
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching all dogs:", error);
-      throw error; // You might want to handle the error or throw it further up the chain
-    }
+  getAllDogs: (): Promise<DogData[]> => {
+    return fetch(`${baseUrl}/dogs/`, { method: "GET" }).then((response) => {
+      if (!response.ok) throw new Error("Error Fetching Dog Data");
+      return response.json();
+    });
   },
 
   // should create a dog in the database from a partial dog object
@@ -30,58 +24,42 @@ export const Requests = {
     image: string;
     isFavorite: boolean;
   }) => {
-    try {
-      const response = await fetch("http://localhost:3000/dogs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          description,
-          image,
-          isFavorite,
-        }),
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error creating dog:", error);
-      throw error;
-    }
+    return fetch(`${baseUrl}/dogs`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        description,
+        image,
+        isFavorite,
+      }),
+    }).then((response) => {
+      if (!response.ok) throw new Error("Error Posting Dog");
+      return response.json() as Promise<unknown>;
+    });
   },
 
   // should delete a dog from the database
-  deleteDog: async (index: number) => {
-    try {
-      const response = await fetch(`http://localhost:3000/dogs/${index}`, {
-        method: "DELETE",
-      });
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.error("Error deleting dog:", error);
-      throw error;
-    }
+  deleteDog: async (id: number) => {
+    return fetch(`${baseUrl}/dogs/${id}`, { method: "DELETE" }).then(
+      (response) => {
+        if (!response.ok) throw new Error(`Failed to delete dog: ${id}`);
+        return response.json() as Promise<unknown>;
+      }
+    );
   },
 
-  updateDog: async (dogId: number, updatedData: object) => {
-    const url = `http://localhost:3000/dogs/${dogId}`;
-
-    try {
-      const response = await fetch(url, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedData),
-      });
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } catch (error) {
-      console.error("Error updating dog:", error);
-      throw error;
-    }
+  updateDog: async (id: number, updatedData: object) => {
+    return fetch(`${baseUrl}/dogs/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    }).then((response) => {
+      if (!response.ok) throw new Error(`Failed to update dog: ${id}`);
+      return response.json() as Promise<unknown>;
+    });
   },
 
   // Just a dummy function for use in the playground
