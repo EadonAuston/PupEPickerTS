@@ -16,12 +16,13 @@ export function FunctionalApp() {
     setIsLoading(true);
     return Requests.getAllDogs()
       .then(setAllDogs)
-      .finally(() => setIsLoading(false))
-      .catch((e) => console.error("Error fetching dog data:", e));
+      .finally(() => setIsLoading(false));
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData().catch(() => {
+      toast.error("Failed to fetch the dogs");
+    });
   }, []);
 
   const filteredDogData = (() => {
